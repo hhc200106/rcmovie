@@ -1,18 +1,74 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <el-container>
+      <el-header class="header">日辰影城后台管理系统</el-header>
+      <el-container>
+        <el-aside class="aside scroll-container" width="200px">
+          <el-menu active-text-color="#fff" background-color="#333" style="border-right: none" text-color="#ccc"
+                   unique-opened>
+            <el-submenu index="/actor">
+              <template slot="title">
+                <i class="el-icon-user-solid"></i>
+                <span slot="title">演员管理</span>
+              </template>
+              <el-menu-item index="/movie-actor/list">
+                <i class="el-icon-menu"></i>
+                <span>演员列表</span>
+              </el-menu-item>
+            </el-submenu>
+            <el-submenu index="/director">
+              <template slot="title">
+                <i class="el-icon-s-custom"></i>
+                <span slot="title">导演管理</span>
+              </template>
+              <el-menu-item index="/movie-director/list">
+                <i class="el-icon-menu"></i>
+                <span>导演列表</span>
+              </el-menu-item>
+            </el-submenu>
+
+
+            <el-submenu index="/movie">
+              <template slot="title">
+                <i class="el-icon-video-camera-solid"></i>
+                <span slot="title">电影管理</span>
+              </template>
+              <el-menu-item index="/movie-info/list">
+                <i class="el-icon-menu"></i>
+                <span>电影列表</span>
+              </el-menu-item>
+            </el-submenu>
+          </el-menu>
+        </el-aside>
+        <!--垂直导航-->
+        <el-main class="main">main</el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
-export default {
-  name: 'HomeView',
-  components: {
-    HelloWorld
-  }
-}
+export default {}
 </script>
+
+<style lang="scss" scoped>
+.header {
+  background-color: #333;
+  color: #fff;
+  line-height: 60px;
+  font-size: 1.3em;
+}
+
+.aside {
+  background-color: #333;
+  height: calc(100vh - 60px);
+}
+
+.main {
+  height: calc(100vh - 60px);
+}
+
+.el-menu-item.is-active {
+  font-weight: bold;
+}
+</style>
