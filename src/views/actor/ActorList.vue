@@ -17,23 +17,23 @@
       </el-form-item>
     </el-form>
     <el-divider content-position="left">演员列表</el-divider>
-    <div class="actor-item">
-      <el-avatar :size="70" fit="cover" shape="square" src="/xxx"></el-avatar>
-      <div>姓名</div>
-    </div>
-    <div v-for=" i in 100" :key="i" class="actor-item">
-      <el-avatar :size="70" fit="cover" shape="square" src="/xxx"></el-avatar>
-      <div>姓名</div>
-    </div>
+
+    <person-item v-for="item in actorList" :id="item.id" :key="item.id" :avatar="item.actor_avatar"
+                 :name="item.actor_name" @deleteSuccess="onDeleteSuccess"></person-item>
+
   </div>
 </template>
 
 <script>
+import PersonItem from "@/components/PersonItem";
+
 export default {
+  components: {PersonItem},
   data() {
     return {
+      actorList: null,
       searchForm: {
-        actorName: '',
+        actorName: ''
       }
     }
   },
@@ -42,20 +42,37 @@ export default {
      * 点击所有按钮时执行
      * */
     onSearch() {
-
+      // 发送请求
+      if (!this.searchForm.actorName.trim()) {
+        //  填写的是空字符串
+        this.loadActorList() // 加载演员列表
+      }
+      let name = this.searchForm.actorName
+      this.axios.post('/movie-actors/name', `name=${name}`).then(res => {
+        console.log('模糊查询结果', res)
+        if (res.data.code === 200) {
+          this.actorList = res.data.data
+        }
+      })
+    },
+    loadActorList() {
+      this.axios.get('/movie-actors?page=1&pagesize=100').then(res => {
+        console.log('加载演员列表', res)
+        if (res.data.code === 200) {
+          this.actorList = res.data.data
+        }
+      })
+    },
+    onDeleteSuccess() {
+      this.loadActorList()
     }
   },
+  mounted() {
+    // 加载演员列表
+    this.loadActorList()
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-.actor-item {
-  display: inline-block;
-  margin: 20px 20px 0 0;
-  text-align: center;
-
-  div {
-    font-size: 0.9em;
-  }
-}
 </style>

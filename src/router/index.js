@@ -17,6 +17,10 @@ const routes = [
             name: 'actor-list',
             component: () => import('../views/actor/ActorList.vue')
         }, {
+            path: 'actor-add',
+            name: 'actor-add',
+            component: () => import('../views/actor/ActorAdd.vue')
+        }, {
             path: 'director-list',
             name: 'director-list',
             component: () => import('../views/director/DirectorList.vue')

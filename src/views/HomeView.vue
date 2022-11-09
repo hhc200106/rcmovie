@@ -16,6 +16,10 @@
                 <i class="el-icon-menu"></i>
                 <span>演员列表</span>
               </el-menu-item>
+              <el-menu-item index="/home/actor-add">
+                <i class="el-icon-menu"></i>
+                <span>新增演员</span>
+              </el-menu-item>
             </el-submenu>
             <el-submenu index="/director">
               <template slot="title">
