@@ -5,13 +5,14 @@ import store from './store'
 
 import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import axios from "axios";
+import httpApis from "./http/index";
+
+Vue.prototype.$http = httpApis
+
 
 Vue.use(Element)
 Vue.config.productionTip = false
 
-Vue.prototype.axios = axios
-axios.defaults.baseURL = "http://localhost:3000"
 
 new Vue({
     router,

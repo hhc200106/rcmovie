@@ -56,9 +56,9 @@ export default {
       })
     },
     loadActorList() {
-      this.axios.get('/movie-actors?page=1&pagesize=100').then(res => {
+      this.$http.ActorApi.list(1, 100).then((res) => {
         console.log('加载演员列表', res)
-        if (res.data.code === 200) {
+        if (res.data.code == 200) {
           this.actorList = res.data.data
         }
       })
