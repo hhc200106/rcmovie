@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.axios.post('/movie-actor/add', `actorName=${this.form.actorName}&actorAvatar=${this.form.actorAvatar}`).then(res => {
+      this.$http.ActorApi.add(this.form).then(res => {
         if (res.data.code === 200) {
           this.$message.success('添加成功')
           this.$router.push('/home/actor-list')

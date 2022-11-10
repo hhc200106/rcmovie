@@ -11,7 +11,7 @@ export default {
   props: ['id', 'name', 'avatar'],
   methods: {
     deleteActor() {
-      this.axios.post('/movie-actor/del', `id=${this.id}`).then(res => {
+      this.$http.ActorApi.del().then(res => {
         console.log(res)
         if (res.data.code == 200) {
           this.$message.success('删除成功')
