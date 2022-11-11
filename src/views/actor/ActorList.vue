@@ -1,11 +1,10 @@
 <template>
   <div>
     <!--面包屑导航-->
-    <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item><a href="/">活动管理</a></el-breadcrumb-item>
-      <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-      <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+    <el-breadcrumb separator=">">
+      <el-breadcrumb-item>首页</el-breadcrumb-item>
+      <el-breadcrumb-item>演员管理</el-breadcrumb-item>
+      <el-breadcrumb-item>演员查询</el-breadcrumb-item>
     </el-breadcrumb>
     <el-divider></el-divider>
     <el-form :inline="true" :model="searchForm" class="demo-form-inline">
@@ -19,7 +18,7 @@
     <el-divider content-position="left">演员列表</el-divider>
 
     <person-item v-for="item in actorList" :id="item.id" :key="item.id" :avatar="item.actor_avatar"
-                 :name="item.actor_name" @deleteSuccess="onDeleteSuccess"></person-item>
+                 :name="item.actor_name" @delete="onDelete(item.id)"></person-item>
 
   </div>
 </template>
@@ -48,7 +47,7 @@ export default {
         this.loadActorList() // 加载演员列表
       }
       let name = this.searchForm.actorName
-      this.axios.post('/movie-actors/name', `name=${name}`).then(res => {
+      this.$http.ActorApi.listByName({name}).then(res => {
         console.log('模糊查询结果', res)
         if (res.data.code === 200) {
           this.actorList = res.data.data
@@ -63,8 +62,14 @@ export default {
         }
       })
     },
-    onDeleteSuccess() {
-      this.loadActorList()
+    onDelete(id) {
+      this.$http.ActorApi.delete({id: id}).then(res => {
+        console.log(res)
+        if (res.data.code == 200) {
+          this.$message.success('删除成功')
+          this.loadActorList()
+        }
+      })
     }
   },
   mounted() {

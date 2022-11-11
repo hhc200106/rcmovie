@@ -30,6 +30,10 @@
                 <i class="el-icon-menu"></i>
                 <span>导演列表</span>
               </el-menu-item>
+              <el-menu-item index="/home/director-add">
+                <i class="el-icon-menu"></i>
+                <span>新增导演</span>
+              </el-menu-item>
             </el-submenu>
             <el-submenu index="/movie">
               <template slot="title">
@@ -39,6 +43,10 @@
               <el-menu-item index="/home/movie-list">
                 <i class="el-icon-menu"></i>
                 <span>电影列表</span>
+              </el-menu-item>
+              <el-menu-item index="/home/movie-add">
+                <i class="el-icon-menu"></i>
+                <span>新增电影</span>
               </el-menu-item>
             </el-submenu>
           </el-menu>

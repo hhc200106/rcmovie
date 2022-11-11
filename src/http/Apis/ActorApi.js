@@ -2,7 +2,7 @@ import myAxios from "@/http/MyAxios";
 import BaseUrl from "@/http/BaseUrl";
 
 const actorApi = {
-    del(params) {
+    delete(params) {
         return myAxios.post(BaseUrl + '/movie-actor/del', params)
     },
     add(params) {
@@ -10,6 +10,9 @@ const actorApi = {
     },
     list(params) {
         return myAxios.get(BaseUrl + '/movie-actors', params)
+    },
+    listByName(params) {
+        return myAxios.post(BaseUrl + '/movie-actors/name', params)
     }
 }
 

@@ -25,9 +25,17 @@ const routes = [
             name: 'director-list',
             component: () => import('../views/director/DirectorList.vue')
         }, {
+            path: 'director-add',
+            name: 'director-add',
+            component: () => import('../views/director/DirectorAdd.vue')
+        }, {
             path: 'movie-list',
             name: 'movie-list',
             component: () => import('../views/movie/MovieList.vue')
+        }, {
+            path: 'movie-add',
+            name: 'movie-add',
+            component: () => import('../views/movie/MovieAdd.vue')
         }]
     },
     {
