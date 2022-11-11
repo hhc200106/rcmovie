@@ -40,7 +40,18 @@
             </el-select>
           </el-form-item>
           <el-form-item label="电影主演" prop="starActor">
-            <el-input v-model="form.starActor"></el-input>
+            <el-select
+                v-model="form.starActor"
+                :loading="loadingActors"
+                :remote-method="loadActorsByName"
+                filterable
+                multiple
+                placeholder="请输入主演名称"
+                remote
+                reserve-keyword>
+              <el-option v-for="item in actorList" :key="item.id" :label="item.actor_name"
+                         :value="item.actor_name"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="上映时间" prop="showingon">
             <el-col :span="11">
@@ -76,6 +87,8 @@
 export default {
   data() {
     return {
+      loadingActors: false,
+      actorList: null,
       form: {
         cover: '',
         categoryId: 1,
@@ -117,8 +130,17 @@ export default {
     }
   },
   methods: {
+    loadActorsByName(query) {
+      this.loadingActors = true
+      this.$http.ActorApi.listByName({name: query}).then(res => {
+        console.log(res.data.data)
+        this.actorList = res.data.data
+        this.loadingActors = false
+      })
+    },
     onSubmit() {
       this.form.type = this.form.type.join('/')
+      this.form.starActor = this.form.starActor.join('/')
       this.$refs['form'].validate((valid) => {
         if (valid) {
           console.log("submit!", this.form)
