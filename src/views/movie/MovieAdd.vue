@@ -30,13 +30,13 @@
           <el-form-item label="电影名称" prop="title">
             <el-input v-model="form.title"></el-input>
           </el-form-item>
-          <el-form-item label="电影类别" prop="type">
+          <el-form-item label="电影类型" prop="type">
             <el-select v-model="form.type" multiple placeholder="请选择电影类型">
-              <el-option label="言情1" value="言情1"></el-option>
-              <el-option label="言情2" value="言情2"></el-option>
-              <el-option label="言情3" value="言情3"></el-option>
-              <el-option label="言情4" value="言情4"></el-option>
-              <el-option label="言情5" value="言情5"></el-option>
+              <el-option v-for="item in movieTypes"
+                         :key="item.id"
+                         :label="item.typename"
+                         :value="item.typename"
+              ></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="电影主演" prop="starActor">
@@ -112,11 +112,13 @@ export default {
         score: [
           {required: true, message: '请选择封面图片', trigger: 'blur'}
         ]
-      }
+      },
+      movieTypes: null,
     }
   },
   methods: {
     onSubmit() {
+      this.form.type = this.form.type.join('/')
       this.$refs['form'].validate((valid) => {
         if (valid) {
           console.log("submit!", this.form)
@@ -148,7 +150,19 @@ export default {
         this.$message.error("上传头像图片不能超过2MB")
       }
       return isJPG && isLt2M
+    },
+    loadAllMovieTypes() {
+      this.$http.MovieApi.listAllMovieTypes().then(res => {
+        console.log(res.data.data)
+        if (res.data.code === 200) {
+          this.movieTypes = res.data.data
+        }
+      })
     }
+  },
+  mounted() {
+    //  加载所有的电影类型
+    this.loadAllMovieTypes()
   }
 }
 </script>
