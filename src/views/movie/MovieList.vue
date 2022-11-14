@@ -43,10 +43,11 @@
             <el-tag v-if="scope.row.category_id === 3" type="success">经典</el-tag>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="操作" width="200">
+        <el-table-column align="center" label="操作" width="240">
           <template>
             <el-button circle icon="el-icon-user" type="info"></el-button>
-            <el-button circle icon="el-icon-picture-outline" type="warning"></el-button>
+            <el-button circle icon="el-icon-picture-outline" type="success"></el-button>
+            <el-button circle icon="el-icon-delete" type="warning"></el-button>
             <el-button circle icon="el-icon-delete" type="danger"></el-button>
           </template>
         </el-table-column>
@@ -56,7 +57,8 @@
           :total="tableData.total"
           background
           layout="prev, pager, next"
-          style="margin: 20px 0;text-align: right">
+          style="margin: 20px 0;text-align: right"
+          @current-change="changeCurrentPage">
       </el-pagination>
     </div>
   </div>
@@ -79,6 +81,12 @@ export default {
     /**
      * 点击所有按钮时执行
      * */
+    changeCurrentPage(val) {
+      this.$http.MovieApi.list({page: val, pagesize: 2}).then((res) => {
+        console.log(val)
+        this.tableData = res.data.data
+      })
+    },
     onSearch() {
     },
     loadMovieList() {
