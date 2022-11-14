@@ -7,6 +7,9 @@ const movieApi = {
     },
     listAllMovieTypes() {
         return myAxios.get(BaseUrl + '/movie-types')
+    },
+    list(params) {
+        return myAxios.get(BaseUrl + '/movie-infos', params)
     }
 }
 export default movieApi
