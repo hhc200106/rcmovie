@@ -1,32 +1,25 @@
 <template>
-  <div>
-    <router-view></router-view>
+  <div id="app">
+    <router-view />
   </div>
 </template>
 
-<script>
-export default {}
-</script>
-
-<style lang="scss">
+<style>
 * {
-  margin: 0;
-  padding: 0;
+  margin: 0px;
+  padding: 0px;
   text-decoration: none;
 }
-
-.scroll-container::-webkit-scrollbar {
+.scroll-container::-webkit-scrollbar{
   width: 6px;
 }
-
-.scroll-container::-webkit-scrollbar-track {
-  background-color: #efefef;
+.scroll-container::-webkit-scrollbar-track{
+  background: #efefef;
   width: 6px;
 }
-
-.scroll-container::-webkit-scrollbar-thumb {
+.scroll-container::-webkit-scrollbar-thumb{
   background: #bfbfbf;
-  border-radius: 3px;
-  width: 6px;
+  border-radius:3px;
+   width: 6px;
 }
 </style>

@@ -1,4 +1,4 @@
-# rcmovie
+# bmdstudios-ms-client
 
 ## Project setup
 ```

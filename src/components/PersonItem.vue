@@ -1,51 +1,50 @@
 <template>
   <div class="actor-item">
-    <el-avatar :size="70" :src="avatar" fit="cover" shape="square"></el-avatar>
-    <div>{{ name }}</div>
+    <el-avatar shape="square" fit="cover" :size="70" :src="avatar"></el-avatar>
+    <div>{{name}}</div>
     <i class="el-icon-error" @click="deleteActor()"></i>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['id', 'name', 'avatar'],
+  props: ["id", "name", "avatar"],
+  data() {
+    return {}
+  },
   methods: {
+    /**
+     * 删除演员接口
+     */
     deleteActor() {
+      // 通知父组件，点击了删除   主动触发在父组件中监听的delete事件
       this.$emit('delete')
     }
   },
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .actor-item {
   display: inline-block;
-  margin: 20px 20px 0 0;
+  margin: 20px 20px 0px 0px;
   text-align: center;
   position: relative;
-
-  i {
-    position: absolute;
-    font-size: 1.2em;
-    top: 0px;
-    right: 0px;
-    display: none;
-  }
-
-  &:hover {
-    i {
-      display: block;
-    }
-  }
-
-  .el-avatar {
-    ::v-deep img {
-      width: 100%;
-    }
-  }
-
-  div {
-    font-size: 0.9em;
-  }
+}
+.actor-item:hover i {
+  display: block;
+}
+.actor-item i {
+  position: absolute;
+  font-size: 1.2em;
+  top: -6px;
+  right: -6px;
+  display: none;
+}
+.actor-item div {
+  font-size: 0.9em;
+}
+.el-avatar>>>img {
+  width: 100%;
 }
 </style>

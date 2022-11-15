@@ -4,7 +4,8 @@
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item>首页</el-breadcrumb-item>
       <el-breadcrumb-item>电影管理</el-breadcrumb-item>
-      <el-breadcrumb-item>新增电影</el-breadcrumb-item>
+      <el-breadcrumb-item>电影列表</el-breadcrumb-item>
+      <el-breadcrumb-item>修改电影</el-breadcrumb-item>
     </el-breadcrumb>
     <el-divider></el-divider>
 
@@ -28,8 +29,8 @@
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-form-item>
-          <el-form-item label="电影类别" prop="categoryId">
-            <el-radio-group v-model="form.categoryId">
+          <el-form-item label="电影类别" prop="category_id">
+            <el-radio-group v-model="form.category_id">
               <el-radio :label="1">热映</el-radio>
               <el-radio :label="2">待映</el-radio>
               <el-radio :label="3">经典</el-radio>
@@ -53,9 +54,9 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="电影主演" prop="starActor">
+          <el-form-item label="电影主演" prop="star_actor">
             <el-select
-              v-model="form.starActor"
+              v-model="form.star_actor"
               multiple
               filterable
               remote
@@ -68,7 +69,8 @@
                 v-for="item in actorList"
                 :key="item.id"
                 :label="item.actor_name"
-                :value="item.actor_name">
+                :value="item.actor_name"
+              >
               </el-option>
             </el-select>
           </el-form-item>
@@ -91,12 +93,13 @@
             <el-input type="textarea" v-model="form.description"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit">立即创建</el-button>
+            <el-button type="primary" @click="onSubmit">立即更新</el-button>
             <el-button>取消</el-button>
           </el-form-item>
         </el-form>
       </el-col>
     </el-row>
+
   </div>
 </template>
 
@@ -104,16 +107,17 @@
 export default {
   data() {
     return {
-      actorList: null,   // 绑定演员列表
+      actorList: null, // 绑定演员列表
       loadingActors: false, // 绑定是否正在加载演员列表
       movieTypes: null, // 绑定所有的电影类型
       form: {
+        id: this.$route.params.id,
         // 封装表单数据
         cover: "",
-        categoryId: 1, // 默认热映类别
+        category_id: 1, // 默认热映类别
         title: "",
         type: "",
-        starActor: "",
+        star_actor: "",
         showingon: "",
         score: "",
         duration: "",
@@ -140,29 +144,28 @@ export default {
   },
 
   methods: {
-
     /**
      * 通过名称模糊查询演员列表
      */
-    loadActorsByName(query){
-      this.loadingActors = true
-      this.$http.ActorApi.listByName({name: query}).then(res=>{
-        console.log('通过名称模糊查询演员列表', res)
-        this.actorList = res.data.data
-        this.loadingActors = false
-      })
+    loadActorsByName(query) {
+      this.loadingActors = true;
+      this.$http.ActorApi.listByName({ name: query }).then((res) => {
+        console.log("通过名称模糊查询演员列表", res);
+        this.actorList = res.data.data;
+        this.loadingActors = false;
+      });
     },
 
     onSubmit() {
       this.form.type = this.form.type.join("/");
-      this.form.starActor = this.form.starActor.join("/");
+      this.form.star_actor = this.form.star_actor.join("/");
       console.log("submit!", this.form);
       this.$refs["form"].validate((valid) => {
         if (valid) {
-          this.$http.MovieApi.add(this.form).then((res) => {
-            console.log("新增电影请求", res);
+          this.$http.MovieApi.update(this.form).then((res) => {
+            console.log("修改电影信息请求", res);
             if (res.data.code == 200) {
-              this.$message.success("添加成功");
+              this.$message.success("更新成功");
               this.$router.push("/home/movie-list");
             }
           });
@@ -187,16 +190,15 @@ export default {
      */
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg";
-      const isPNG = file.type === "image/png";
       const isLt2M = file.size / 1024 / 1024 < 2;
 
-      if (!isJPG && !isPNG) {
-        this.$message.error("上传头像图片只能是 JPG/PNG 格式!");
+      if (!isJPG) {
+        this.$message.error("上传头像图片只能是 JPG 格式!");
       }
       if (!isLt2M) {
         this.$message.error("上传头像图片大小不能超过 2MB!");
       }
-      return (isJPG || isPNG) && isLt2M;
+      return isJPG && isLt2M;
     },
 
     /**
@@ -210,11 +212,26 @@ export default {
         }
       });
     },
+
+    /**
+     * 加载电影详细信息
+     */
+    loadMovieInfo() {
+      this.$http.MovieApi.queryById({ id: this.form.id }).then((res) => {
+        console.log("加载电影详细信息", res);
+        this.form = res.data.data;
+        // 重新整理star_actor、movie_type为数组
+        this.form.star_actor = this.form.star_actor.split("/");
+        this.form.type = this.form.type.split("/");
+      });
+    },
   },
 
   mounted() {
     // 加载所有的电影类型
     this.loadAllMovieTypes();
+    // 加载当前电影的详细信息，回填表单
+    this.loadMovieInfo();
   },
 };
 </script>
